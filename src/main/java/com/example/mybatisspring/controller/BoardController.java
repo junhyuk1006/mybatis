@@ -1,4 +1,4 @@
-package com.example.mybatisspring;
+package com.example.mybatisspring.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
