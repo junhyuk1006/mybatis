@@ -20,7 +20,11 @@
                 <label for="content">내용</label>
                 <div id="content" style="color: white">${board.content}</div>
             </div>
-            <button type="button" class="btn" onclick="location.href='${pageContext.request.contextPath}/boardList'">목록으로</button>
+            <c:if test="${not empty myBoard}">
+                <button type="button" class="btn" onclick="location.href='/editBoard/${board.id}'">수정하기</button>
+                <button type="button" class="btn" onclick="location.href='/deleteBoard/${board.id}'">삭제하기</button>
+            </c:if>
+            <button type="button" class="btn" onclick="location.href='/boardList'">목록으로</button>
     </div>
 </div>
 </body>

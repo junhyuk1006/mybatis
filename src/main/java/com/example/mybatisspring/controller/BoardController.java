@@ -1,6 +1,8 @@
 package com.example.mybatisspring.controller;
 
 import com.example.mybatisspring.dto.Board;
+import com.example.mybatisspring.dto.PageRequest;
+import com.example.mybatisspring.dto.PageResponse;
 import com.example.mybatisspring.dto.User;
 import com.example.mybatisspring.service.BoardService;
 import jakarta.servlet.http.HttpSession;
@@ -20,13 +22,13 @@ public class BoardController {
     BoardService service;
 
     @GetMapping("/boardList")
-    public String boardList(HttpSession session, Model model) {
+    public String boardList(HttpSession session, Model model, PageRequest pageRequest) {
         User user = (User)session.getAttribute("user");
         if(user == null){
             return "redirect:/login";
         }
-        List<Board> boardList = service.getBoardList();
-        model.addAttribute("boardList", boardList);
+        PageResponse pageResponse = service.getBoardList(pageRequest);
+        model.addAttribute("pageResponse" , pageResponse);
         return "board/boardList";
     }
 
@@ -70,17 +72,9 @@ public class BoardController {
         User user = (User)session.getAttribute("user");
         if(user == null) return "redirect:/login";
         Board board = service.getboard(id);
+        if(board.getUserId() == user.getId()) model.addAttribute("myBoard",board.getUserId());
         model.addAttribute("board",board);
         return "board/board";
-    }
-
-    @GetMapping("/myBoard/{id}")
-    public String myBoard(@PathVariable("id") int id, HttpSession session, Model model){
-        User user = (User)session.getAttribute("user");
-        if(user == null) return "redirect:/login";
-        Board board = service.getboard(id);
-        model.addAttribute("board",board);
-        return "board/myBoard";
     }
 
     @GetMapping("/editBoard/{id}")
@@ -96,7 +90,7 @@ public class BoardController {
     public String editBoard(@PathVariable("id") int id, Board board){
         int i = service.updateBoard(board);
         if(i==1){
-            return "redirect:/myBoard/{id}";
+            return "redirect:/board/{id}";
         }
         return "redirect:/editBoard/{id}";
     }
@@ -109,6 +103,6 @@ public class BoardController {
         if(i==1){
             redirectAttributes.addFlashAttribute("deleteMessage","삭제에 성공하였습니다!");
             return "redirect:/myBoardList";
-        }else return "redirect:/myBoard/{id}";
+        }else return "redirect:/board/{id}";
     }
 }
