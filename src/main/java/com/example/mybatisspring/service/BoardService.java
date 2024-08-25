@@ -26,10 +26,18 @@ public class BoardService {
         int startPage = (currentPage-1)/5*5+1;
         int endPage = Math.min(totalPages,startPage+4);
         List<Board> list = boardMapper.getBoardList(pageRequest.getOffset(),pageRequest.getSize());
-        return new PageResponse(list,totalPages,currentPage,startPage,endPage);
+        return new PageResponse(list,currentPage,totalPages,startPage,endPage);
     }
 
-    public List<Board> getMyBoardList(int userId){return boardMapper.getMyBoardList(userId);}
+    public PageResponse getMyBoardList(PageRequest pageRequest,int userId){
+        int total = boardMapper.countMyBoardList(userId);
+        int totalPages = (int)Math.ceil((double)total/pageRequest.getSize());
+        int currentPage = pageRequest.getPage();
+        int startPage = (currentPage-1)/5*5+1;
+        int endPage = Math.min(totalPages,startPage+4);
+        List<Board> list = boardMapper.getMyBoardList(pageRequest.getOffset(),pageRequest.getSize(),userId);
+        return new PageResponse(list,currentPage,totalPages,startPage,endPage);
+    }
 
     public Board getboard(int id) {
         return boardMapper.getBoard(id);

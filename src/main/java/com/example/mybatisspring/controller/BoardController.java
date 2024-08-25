@@ -59,11 +59,11 @@ public class BoardController {
     }
 
     @GetMapping("/myBoardList")
-    public String myBoard(HttpSession session , Model model) {
+    public String myBoard(HttpSession session , Model model ,PageRequest pageRequest) {
         User user = (User)session.getAttribute("user");
         if(user == null) return "redirect:/login";
-        List<Board> myBoardList = service.getMyBoardList(user.getId());
-        model.addAttribute("boardList",myBoardList);
+        PageResponse pageResponse = service.getMyBoardList(pageRequest,user.getId());
+        model.addAttribute("pageResponse",pageResponse);
         return "board/myBoardList";
     }
 

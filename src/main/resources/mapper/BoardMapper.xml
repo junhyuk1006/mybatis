@@ -7,14 +7,21 @@
         insert into board(user_id,title,content) values (#{userId},#{title},#{content})
     </insert>
     <select id="countBoardList" resultType="int">
-        select count(*) from board;
+        select count(*) from board
+    </select>
+    <select id="countMyBoardList" parameterType="int" resultType="int">
+        select count(*) from board where user_id = #{userId}
     </select>
     <select id="getBoardList" parameterType="com.example.mybatisspring.dto.PageRequest">
-        select id,title,content,user_id as userId,created_at as time from board order by id desc
+        select id,title,content,user_id as userId,created_at as time from board
+        order by id desc
         limit #{size} offset #{offset}
     </select>
     <select id="getMyBoardList" parameterType="int">
-        select id,title,content,user_id as userId,created_at as time from board where user_id = #{userId}
+        select id,title,content,user_id as userId,created_at as time from board
+        where user_id = #{userId}
+        order by id desc
+        limit #{size} offset #{offset}
     </select>
     <select id="getBoard" parameterType="int">
         select id,title,content,user_id as userId,created_at as time from board where id = #{id}

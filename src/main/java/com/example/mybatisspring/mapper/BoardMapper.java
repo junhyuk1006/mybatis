@@ -9,8 +9,9 @@ import java.util.List;
 public interface BoardMapper {
     int insertBoard(Board board);
     int countBoardList();
+    int countMyBoardList(int userId);
     List<Board> getBoardList(int offset,int size);
-    List<Board> getMyBoardList(int userId);
+    List<Board> getMyBoardList(int offset,int size, int userId);
     Board getBoard(int id);
     int updateBoard(Board board);
     int deleteBoard(int id);

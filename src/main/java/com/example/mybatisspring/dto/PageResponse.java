@@ -14,8 +14,8 @@ public class PageResponse {
 
     public PageResponse(List<Board> data, int currentPage, int totalPages , int startPage, int endPage) {
         this.data = data;
-        this.totalPages = totalPages;
         this.currentPage = currentPage;
+        this.totalPages = totalPages;
         this.startPage = startPage;
         this.endPage = endPage;
     }
